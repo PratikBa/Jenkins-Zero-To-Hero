@@ -24,10 +24,11 @@ pipeline {
         SONAR_URL = "http://3.0.145.211:9000"
       }
       steps {
-        withCredentials([string(credentialsId: 'sonarqube', variable: 'SONAR_TOKEN')]) {
-          sh 'cd java-maven-sonar-argocd-helm-k8s/spring-boot-app && mvn org.sanarsource.scanner.maven:sonar-maven-plugin:sonar -Dsonar.login=$SONAR_TOKEN -Dsonar.host.url=http://3.0.145.211:9000' 
+        withCredentials([string(credentialsId: 'SONAR_TOKEN', variable: 'SONAR_TOKEN')]) {
+  sh 'cd java-maven-sonar-argocd-helm-k8s/spring-boot-app && mvn org.sonarsource.scanner.maven:sonar-maven-plugin:5.9.0.7382:sonar -Dsonar.token=$SONAR_TOKEN -Dsonar.host.url=$SONAR_URL'
+} 
 //mvn sonar:sonar -Dsonar.login=$Sonarqubetoken -Dsonar.host.url=${SONAR_URL}
-        }
+        
       }
     }
     stage('Build and Push Docker Image') {
